@@ -83,7 +83,7 @@ This project uses a manual versioning process. It is your responsibility to keep
 ## 📐 Code Standards
 
 ### JavaScript (ES2020+)
-
+* ALWAYS use external script files. No inline scripts.
 * **Strict Mode**: Every file MUST begin with `'use strict';`.
 * **Modules**: Use ES Modules (`import`/`export`) exclusively.
 * **Structure**: Each module MUST export an `init()` and a corresponding `teardown()` function.
@@ -121,7 +121,7 @@ export function teardown() {
 ```
 
 ### CSS
-
+* ALWAYS use external stylesheets. No inline styles.
 * **Modern CSS**: Use custom properties for theming and configuration.
 * **Layout**: Use CSS Grid and Flexbox. Container Queries for component responsiveness.
 * **Units**: `rem` for typography/spacing. `svh`/`svw` for viewport units.

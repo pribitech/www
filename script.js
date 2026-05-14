@@ -299,3 +299,80 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ========================================
+// Contact Form Validation + Captcha Check
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contact-form');
+    if (!contactForm) return;
+
+    const statusEl = contactForm.querySelector('#form-status');
+
+    function clearErrors() {
+        contactForm.querySelectorAll('.field-error').forEach(el => el.remove());
+        if (statusEl) {
+            statusEl.textContent = '';
+            statusEl.classList.remove('text-red-600');
+            statusEl.classList.remove('text-green-600');
+        }
+    }
+
+    function showError(inputEl, message) {
+        const err = document.createElement('div');
+        err.className = 'field-error text-sm text-red-600 mt-1';
+        err.textContent = message;
+        if (inputEl && inputEl.parentNode) inputEl.parentNode.appendChild(err);
+    }
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearErrors();
+
+        const name = contactForm.querySelector('#name');
+        const email = contactForm.querySelector('#email');
+        const message = contactForm.querySelector('#message');
+        const captcha = contactForm.querySelector('#captcha-checkbox');
+
+        let valid = true;
+
+        if (!name || !name.value.trim()) {
+            showError(name, 'Please enter your name');
+            valid = false;
+        }
+
+        const emailVal = email ? email.value.trim() : '';
+        if (!emailVal || !/^\S+@\S+\.\S+$/.test(emailVal)) {
+            showError(email, 'Please enter a valid email address');
+            valid = false;
+        }
+
+        if (!message || !message.value.trim()) {
+            showError(message, 'Please enter a message');
+            valid = false;
+        }
+
+        if (!captcha || !captcha.checked) {
+            showError(contactForm.querySelector('#captcha-checkbox'), 'Please confirm you are not a robot');
+            valid = false;
+        }
+
+        if (!valid) {
+            if (statusEl) {
+                statusEl.textContent = 'Please correct the errors above.';
+                statusEl.classList.remove('text-green-600');
+                statusEl.classList.add('text-red-600');
+            }
+            return;
+        }
+
+        // Since there's no backend configured here, simulate success.
+        if (statusEl) {
+            statusEl.textContent = 'Message sent. Thank you!';
+            statusEl.classList.remove('text-red-600');
+            statusEl.classList.add('text-green-600');
+        }
+        contactForm.reset();
+    });
+});
